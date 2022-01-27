@@ -8,6 +8,7 @@ Suite Teardown              End Suite
 Read PDF Text
     [Documentation]         Read values from a pdf file.
     AppState                Home
+
     VerifyText              Open data for vehicles
     ClickText               Open data for vehicles
     ScrollText              Open data for vehicles contains registration, approval and technical information
@@ -18,7 +19,7 @@ Read PDF Text
     SwitchWindow            NEW
 
     # Use QVision library to access elements on the pdf viewer
-    QVision.SetReferenceFolder   ../resources/images
+    QVision.SetReferenceFolder   ${EXECDIR}/../resources/images
     QVision.ClickIcon       pdf_download_icon
     ExpectFileDownload
     QVision.ClickText       Save    anchor=Cancel
