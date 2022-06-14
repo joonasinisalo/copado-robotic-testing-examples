@@ -11,6 +11,9 @@ Date Handling Example
     # US
     ${current_date_us}       Get Current Date    result_format=%m/%d/%Y
 
+    # US - remove leading zeros (in Linux, Windows uses # instead of -)
+    ${current_date_us}       Get Current Date    result_format=%-m/%-d/%Y
+
     # Finland
     ${current_date_fi}       Get Current Date    result_format=%d.%m.%Y
 
