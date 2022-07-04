@@ -15,7 +15,7 @@ ${images_dir}                     ../resources/images
 
 *** Keywords ***
 Setup Browser
-    Set Library Search Order      QWeb
+    Set Library Search Order      QWeb    QVision
     Open Browser                  about:blank    ${BROWSER}
 
 
