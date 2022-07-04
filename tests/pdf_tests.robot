@@ -24,6 +24,19 @@ Read PDF Text
     ExpectFileDownload
     QVision.ClickText       Save    anchor=Cancel
 
+    ${file_exists}          Set Variable    False
+
+    # Wait for file download
+    FOR    ${i}    IN RANGE    0    20
+        ${file_exists}      Run Keyword And Return Status
+        ...                 File Should Exist    /root/Downloads/${pdf_file}.pdf
+
+        IF                  ${file_exists}       BREAK
+        Sleep               0.5s
+    END
+
+    List Files In Directory    /root/Downloads/
+
     # When dowloading a large file there should be a waiting mechanism
     UsePdf                  /root/Downloads/${pdf_file}.pdf
 
