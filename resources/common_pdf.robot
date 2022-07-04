@@ -1,6 +1,7 @@
 *** Settings ***
 Library                           QWeb
 Library                           QVision
+Library                           OperatingSystem
 Library                           String
 
 
