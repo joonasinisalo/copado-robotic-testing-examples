@@ -1,0 +1,17 @@
+on:
+  push:
+    branches:
+      - jsi_github_actions
+
+jobs:
+  run_test_suite:
+    runs-on: ubuntu-latest
+    name: Run a test suite in Copado Robotic Testing
+    steps:
+      - name: Run a test suite
+        uses: qentinelqi/qentinel-pace-action@1.0.2
+        id: test_suite
+        with:
+          access_token: ${{ secrets.CRT_ACCESS_TOKEN }}
+          suite_id: 28555
+          project_id: 10603
