@@ -25,4 +25,3 @@ Date Handling Example
 
     # Subtract time from date
     ${minus45_date}          Subtract Time From Date    ${current_date_us}    45 days    date_format=%m/%d/%Y    result_format=%m/%d/%Y
-
