@@ -18,8 +18,18 @@ Read PDF Text
     # Pdf opens to a new tab and we need to switch focus
     SwitchWindow            NEW
 
+    # Live Testing and normal test runs use different execution and download directories
+    # and that needs to be taken into account
+    IF    "${EXECDIR}" == "/home/executor/execution"    # normal test run environment
+        ${reference_folder}=    Set Variable    ${EXECDIR}/resources/images
+        ${downloads_folder}=    Set Variable    /home/executor/Downloads
+    ELSE    # Live Testing environment
+        ${reference_folder}=    Set Variable    ${EXECDIR}/../resources/images
+        ${downloads_folder}=    Set Variable    /home/services/Downloads
+    END
+
     # Use QVision library to access elements on the pdf viewer
-    QVision.SetReferenceFolder   ${EXECDIR}/../resources/images
+    QVision.SetReferenceFolder   ${reference_folder}
     QVision.ClickIcon       pdf_download_icon
     ExpectFileDownload
     QVision.ClickText       Save    anchor=Cancel
@@ -29,16 +39,16 @@ Read PDF Text
     # Wait for file download
     FOR    ${i}    IN RANGE    0    20
         ${file_exists}      Run Keyword And Return Status
-        ...                 File Should Exist    /root/Downloads/${pdf_file}.pdf
+        ...                 File Should Exist    ${downloads_folder}/${pdf_file}.pdf
 
         IF                  ${file_exists}       BREAK
         Sleep               0.5s
     END
 
-    List Files In Directory    /root/Downloads/
+    List Files In Directory    ${downloads_folder}
 
     # When dowloading a large file there should be a waiting mechanism
-    UsePdf                  /root/Downloads/${pdf_file}.pdf
+    UsePdf                  ${downloads_folder}/${pdf_file}.pdf
 
     # Read file contents to a variable and find an address
     ${file_content}         GetPdfText
