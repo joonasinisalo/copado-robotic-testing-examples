@@ -21,7 +21,8 @@ Read PDF Text
     # Live Testing and normal test runs use different execution and download directories
     # and that needs to be taken into account
     IF    "${EXECDIR}" == "/home/executor/execution"    # normal test run environment
-        ${reference_folder}=    Set Variable    ${EXECDIR}/${SUITE NAME}/resources/images
+        ${test_suite}=          Evaluate    "${SUITE NAME}".split(".")[0]
+        ${reference_folder}=    Set Variable    ${EXECDIR}/${test_suite}/resources/images
         ${downloads_folder}=    Set Variable    /home/executor/Downloads
     ELSE    # Live Testing environment
         ${reference_folder}=    Set Variable    ${EXECDIR}/../resources/images
