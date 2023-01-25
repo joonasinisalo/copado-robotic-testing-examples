@@ -38,4 +38,11 @@ Time Zones
     # Calculate IST time from UTC
     ${ist_time}=             Add Time To Time    5:30:0    ${current_time_utc}    timer    exclude_millis=True
 
+Convert String to DateTime
+    # Convert string variable to a DateTime object
 
+    ${string_date}=          Set Variable    20/01/2023
+    ${converted}=            Convert Date    ${string_date}    datetime    date_format=%d/%m/%Y
+
+    # Change converted date to custom result format
+    ${custom_format}=        Convert Date    ${converted}    result_format=%-m/%-d/%Y
