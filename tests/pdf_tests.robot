@@ -7,14 +7,25 @@ Suite Teardown              End Suite
 *** Test Cases ***
 Read PDF Text
     [Documentation]         Read values from a pdf file.
-    AppState                Home
-    VerifyText              Finnish Transport and Communications Agency
+    VerifyText              EUR-Lex.europa.eu
 
-    ${consent}=             IsText    CONSENT: visitor statistics
-    IF                      ${consent}    ClickText    Block    anchor=Allow
+    # Cookie consent handling
+    ${consent}=             IsText    This site uses cookies
+    IF                      ${consent}    ClickText    Accept only essential cookies
 
-    ScrollText              Internal networks in properties
-    ClickText               Regulation 65 on internal networks
+    ClickText               Access to European Union law
+
+    VerifyTitle             EU law - EUR-Lex
+    TypeText                Quick search    cookies
+    ClickItem               Search
+
+    VerifyText              Search Results
+    ClickText               (EU) 2017/1128
+
+    VerifyText              Document 32017R1128
+
+    # Open the English version of the pdf document
+    ClickItem               PDF English
 
     # Live Testing and normal test runs use different execution and download directories
     # and that needs to be taken into account
@@ -23,14 +34,34 @@ Read PDF Text
     ELSE    # Live Testing environment
         ${downloads_folder}=    Set Variable    /home/services/Downloads
     END
+ 
+    ${pdf_file}=            Set Variable    CELEX_32017R1128_EN_TXT.pdf
 
-    # Extract pdf file name from the download link
-    ${download_link}=       GetAttribute    //span[contains(text(), "Regulation 65D/2019")]/../..    href
-    ${pdf_file}=            Evaluate    $download_link.split("/")[-1]
+    #
+    # Method 1: use QVision to verify text in the pdf reader
+    #
+    FOR    ${i}    IN RANGE    ${1}    ${20}
+        TRY
+            QVision.VerifyText      Article 1    timeout=5
+            BREAK
+        EXCEPT
+            QVision.PageDown        1
+        END
+    END
 
-    # Clicking the file name starts the download, therefore calling ExpectFileDownload first
+    #
+    # Method 2: download the pdf and read its contents to a variable, find text from the content
+    #
+
+    # Define the location of reference images to QVision
+    QVision.SetReferenceFolder   ${CURDIR}/../resources/images
+
+    # QVision is needed to access elements in the pdf reader, use the reference icon to click the download button
+    QVision.ClickIcon       pdf_download_icon
+
+    # 
     ExpectFileDownload
-    ClickText               Regulation 65D/2019
+    QVision.ClickText       Save    anchor=Cancel
 
     ${file_exists}          Set Variable    False
 
@@ -50,6 +81,6 @@ Read PDF Text
 
     # Read file contents to a variable, find a text field from the file and return its contents
     ${file_content}         GetPdfText
-    ${find_position}        Evaluate    $file_content.find("Modification details:")
-    ${details}              Evaluate    $file_content[$find_position:$find_position+153].lstrip("Modification details:")
+    ${find_position}        Evaluate    $file_content.find("Article 1")
+    ${details}              Evaluate    $file_content[$find_position:$find_position+36].lstrip("Article 1").replace("\\n", " ")
     Log                     ${details}    console=true
