@@ -8,13 +8,24 @@ Suite Teardown              End Suite
 Read PDF Text
     [Documentation]         Read values from a pdf file.
     AppState                Home
-    VerifyText              Finnish Transport and Communications Agency
+    VerifyText              EUR-Lex.europa.eu
 
-    ${consent}=             IsText    CONSENT: visitor statistics
-    IF                      ${consent}    ClickText    Block    anchor=Allow
+    ${consent}=             IsText    This site uses cookies
+    IF                      ${consent}    ClickText    Accept only essential cookies
 
-    ScrollText              Internal networks in properties
-    ClickText               Regulation 65 on internal networks
+    ClickText               Access to European Union law
+
+    VerifyTitle             EU law - EUR-Lex
+    TypeText                Quick search    cookies
+    ClickItem               Search
+
+    VerifyText              Search Results
+    ClickText               (EU) 2017/1128
+
+    VerifyText              Document 32017R1128
+
+    # Open the English version of the pdf document
+    ClickItem               PDF English
 
     # Live Testing and normal test runs use different execution and download directories
     # and that needs to be taken into account
@@ -24,13 +35,13 @@ Read PDF Text
         ${downloads_folder}=    Set Variable    /home/services/Downloads
     END
 
-    # Extract pdf file name from the download link
-    ${download_link}=       GetAttribute    //span[contains(text(), "Regulation 65D/2019")]/../..    href
-    ${pdf_file}=            Evaluate    $download_link.split("/")[-1]
+    ${pdf_file}=            Set Variable    CELEX_32017R1128_EN_TXT.pdf
 
-    # Clicking the file name starts the download, therefore calling ExpectFileDownload first
+    # Use QVision library to access elements on the pdf viewer
+    QVision.SetReferenceFolder   ${CURDIR}/../resources/images
+    QVision.ClickIcon       pdf_download_icon
     ExpectFileDownload
-    ClickText               Regulation 65D/2019
+    QVision.ClickText       Save    anchor=Cancel
 
     ${file_exists}          Set Variable    False
 
@@ -48,8 +59,12 @@ Read PDF Text
     # When dowloading a large file there should be a waiting mechanism
     UsePdf                  ${downloads_folder}/${pdf_file}
 
+    # Text to verify:
+    # Cross-border portability of online content services provided without payment of money
+
+    # TODO
     # Read file contents to a variable, find a text field from the file and return its contents
     ${file_content}         GetPdfText
-    ${find_position}        Evaluate    $file_content.find("Modification details:")
-    ${details}              Evaluate    $file_content[$find_position:$find_position+153].lstrip("Modification details:")
+    ${find_position}        Evaluate    $file_content.find("Article 6")
+    ${details}              Evaluate    $file_content[$find_position:$find_position+153].lstrip("Article 6")
     Log                     ${details}    console=true
