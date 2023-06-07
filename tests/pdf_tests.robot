@@ -7,9 +7,9 @@ Suite Teardown              End Suite
 *** Test Cases ***
 Read PDF Text
     [Documentation]         Read values from a pdf file.
-    AppState                Home
     VerifyText              EUR-Lex.europa.eu
 
+    # Cookie consent handling
     ${consent}=             IsText    This site uses cookies
     IF                      ${consent}    ClickText    Accept only essential cookies
 
@@ -34,12 +34,32 @@ Read PDF Text
     ELSE    # Live Testing environment
         ${downloads_folder}=    Set Variable    /home/services/Downloads
     END
-
+ 
     ${pdf_file}=            Set Variable    CELEX_32017R1128_EN_TXT.pdf
 
-    # Use QVision library to access elements on the pdf viewer
+    #
+    # Method 1: use QVision to verify text in the pdf reader
+    #
+    FOR    ${i}    IN RANGE    ${1}    ${20}
+        TRY
+            QVision.VerifyText      Article 1    timeout=5
+            BREAK
+        EXCEPT
+            QVision.PageDown        1
+        END
+    END
+
+    #
+    # Method 2: download the pdf and read its contents to a variable, find text from the content
+    #
+
+    # Define the location of reference images to QVision
     QVision.SetReferenceFolder   ${CURDIR}/../resources/images
+
+    # QVision is needed to access elements in the pdf reader, use the reference icon to click the download button
     QVision.ClickIcon       pdf_download_icon
+
+    # 
     ExpectFileDownload
     QVision.ClickText       Save    anchor=Cancel
 
@@ -59,12 +79,8 @@ Read PDF Text
     # When dowloading a large file there should be a waiting mechanism
     UsePdf                  ${downloads_folder}/${pdf_file}
 
-    # Text to verify:
-    # Cross-border portability of online content services provided without payment of money
-
-    # TODO
     # Read file contents to a variable, find a text field from the file and return its contents
     ${file_content}         GetPdfText
-    ${find_position}        Evaluate    $file_content.find("Article 6")
-    ${details}              Evaluate    $file_content[$find_position:$find_position+153].lstrip("Article 6")
+    ${find_position}        Evaluate    $file_content.find("Article 1")
+    ${details}              Evaluate    $file_content[$find_position:$find_position+36].lstrip("Article 1").replace("\\n", " ")
     Log                     ${details}    console=true
