@@ -38,6 +38,12 @@ Time Zones
     # Calculate IST time from UTC
     ${ist_time}=             Add Time To Time    5:30:0    ${current_time_utc}    timer    exclude_millis=True
 
+    # Converting to AM/PM format after calculations
+    ${current_time_utc}=     Get Current Date    time_zone=UTC
+    ${new_time}=             Add Time To Date    ${current_time_utc}    2 mins
+    ${new_time}=             Convert Date    ${new_time}    result_format=%H:%M:%S %p
+
+
 Convert String to DateTime
     # Convert string variable to a DateTime object
 
