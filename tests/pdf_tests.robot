@@ -16,8 +16,7 @@ Read PDF Text
     ClickText               Access to European Union law
 
     VerifyTitle             EU law - EUR-Lex
-    TypeText                Quick search    cookies
-    ClickItem               Search
+    TypeText                Quick search    cookies\n
 
     VerifyText              Search Results
     ClickText               (EU) 2017/1128
