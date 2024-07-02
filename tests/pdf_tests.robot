@@ -39,9 +39,10 @@ Read PDF Text
     #
     # Method 1: use QVision to verify text in the pdf reader
     #
+    QVision.ClickText       REGULATIONS
     FOR    ${i}    IN RANGE    ${1}    ${20}
         TRY
-            QVision.VerifyText      Article 1    timeout=5
+            QVision.VerifyText      Subject matter and scope    timeout=3
             BREAK
         EXCEPT
             QVision.PageDown        1
