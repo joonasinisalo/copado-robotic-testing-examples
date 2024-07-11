@@ -39,6 +39,7 @@ Read PDF Text
     #
     # Method 1: use QVision to verify text in the pdf reader
     #
+    ${text_found}=          Set Variable    ${False}
     QVision.TypeText        100%    150\n
     QVision.ClickText       REGULATIONS
     FOR    ${i}    IN RANGE    ${1}    ${30}
@@ -52,6 +53,7 @@ Read PDF Text
             BREAK
         END
     END
+    IF    ${text_found} == ${False}    Fail
 
     #
     # Method 2: download the pdf and read its contents to a variable, find text from the content
