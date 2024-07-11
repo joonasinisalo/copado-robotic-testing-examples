@@ -39,13 +39,17 @@ Read PDF Text
     #
     # Method 1: use QVision to verify text in the pdf reader
     #
+    QVision.TypeText        100%    150\n
     QVision.ClickText       REGULATIONS
-    FOR    ${i}    IN RANGE    ${1}    ${20}
-        TRY
-            QVision.VerifyText      Subject matter and scope    timeout=3
-            BREAK
-        EXCEPT
+    FOR    ${i}    IN RANGE    ${1}    ${30}
+        
+        ${text_found}=    QVision.IsText    Subject matter and scope
+        
+        IF    ${text_found} == ${False}
             QVision.PageDown        1
+        ELSE
+            LogScreenshot
+            BREAK
         END
     END
 
