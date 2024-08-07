@@ -46,7 +46,6 @@ Time Zones
     ${new_time}=             Add Time To Date    ${current_time_utc}    2 mins
     ${new_time}=             Convert Date    ${new_time}    result_format=%H:%M:%S %p
 
-
 Convert String to DateTime
     # Convert string variable to a DateTime object
 
@@ -55,3 +54,17 @@ Convert String to DateTime
 
     # Change converted date to custom result format
     ${custom_format}=        Convert Date    ${converted}    result_format=%-m/%-d/%Y
+
+Use DateTime to Measure Execution Time
+    ${start_time}=           Get Current Date    result_format=%H:%M:%S
+
+    # Test steps here...
+    Sleep                    5
+    
+    ${end_time}=            Get Current Date    result_format=%H:%M:%S
+
+    # Calculate execution time
+    ${execution_time}=      Subtract Time From Time    ${end_time}    ${start_time}    timer    exclude_millis=True
+
+    # Performance requirement
+    IF    "${execution_time}" > "00:00:03"    Fail
