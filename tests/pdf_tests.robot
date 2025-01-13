@@ -67,7 +67,7 @@ Read PDF Text
     QVision.SetReferenceFolder   ${CURDIR}/../resources/images
 
     # QVision is needed to access elements in the pdf reader, use the reference icon to click the download button
-    QVision.ClickIcon       pdf_download_icon
+    QVision.ClickIcon       pdf_download_icon2
     # or, using ClickText with offset value if there's no possibility to upload reference images
     # QVision.ClickText       100%    right=100
 
