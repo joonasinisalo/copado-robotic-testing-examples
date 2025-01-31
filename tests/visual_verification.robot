@@ -35,7 +35,15 @@ Compare Images
     
     # Adjusting tolerance allows slight differences in images
     CompareImages       /home/services/Downloads/${image_files}[0]    sacha_the_deer_modified_image.jpg    tolerance=0.6
+
+Icon Verification
+    Set Library Search Order    QWeb    QVision        
+    GoTo                https://qentinelqi.github.io/shop/
+    VerifyText          Find your spirit animal
+
+    ScrollText          Contact Us
     
+    VerifyIcon          fur_icon
 
 *** Keywords ***
 Home
