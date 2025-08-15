@@ -1,0 +1,11 @@
+[ {
+"name" : "John Doe",
+"email" : "johndoe@mail.com",
+"company" : "Testautomator",
+"status" : "pending"
+}, {
+"name" : "Tina Smith",
+"email" : "tinasmith@mail.com",
+"company" : "Automationtester",
+"status" : "closed"
+} ]
