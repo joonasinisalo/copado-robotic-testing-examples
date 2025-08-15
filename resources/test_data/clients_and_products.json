@@ -1,0 +1,19 @@
+[ {
+"name" : "John Doe",
+"email" : "johndoe@mail.com",
+"company" : "Testautomator",
+"status" : "pending",
+"product" : {
+    "product_name" : "Bumble the Elephant",
+    "price" : 300
+}
+}, {
+"name" : "Tina Smith",
+"email" : "tinasmith@mail.com",
+"company" : "Automationtester",
+"status" : "closed",
+"product" : {
+    "product_name" : "Gavin the Tiger",
+    "price" : 200
+}
+} ]
