@@ -1,0 +1,1 @@
+{ "Sandboxes": { "Name": "sndbx01", "TestUsers": [ { "UserName": "copadotestbanker1@copado.com.sndbx01", "Password": "pw1" }, { "UserName": "copadotestadminasst1@copado.com.sndbx01", "Password": "pw2" } ] } }
